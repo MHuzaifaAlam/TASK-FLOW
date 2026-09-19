@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TASK</title>
+</head>
+<body>
+    <h1>
+     My Tasks
+    </h1>
+    <a href="{%url 'task_filter' 'my_task' %}">My Task</a>
+    <a href="{%url 'task_filter' 'all' %}">All Tasks</a>
+    <p>Current Filter: {{ current_filter }}</p>
+    <a href="{% url 'task_create' %}">Create Task</a>
+   <form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+    {%for task in tasks%}
+  <h2><a href="{%url  'task_detail' task.id %}">Task: {{task.title|upper}}</a></h2>
+  <p>Project: {{task.project.title|title}}</p>
+  <p>Estimated time: {{task.estimated_hours}} hours</p>
+      {% if task.actual_hours > task.estimated_hours %}
+        <p>Project Progress is slow</p>
+    {%elif task.estimated_hours == 0%}
+    <p>Project not Started yet!</p>
+     {%else%}
+     <p>Project Progress it Good</p>
+        {%endif%}
+      <a href="{% url 'task_update' task.id %}">Edit</a>
+      <a href="{%url 'delete_task' task.id %}">Delete</a>
+
+    {%endfor%}
+</body>
+</html>

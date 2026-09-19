@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Details</title>
+</head>
+<body>
+    <h1>Title:  {{task.title|upper}}</h1>
+    <p>Project: {{task.project.title}}</p>
+    <p>Description: {{task.description}}</p>
+    <p>Assigned to : 
+        {%for user in task.assigned_to.all%}
+        <p>{{user.username}}</p>
+        {%empty%}
+        <p>No User Assigned</p>
+        {%endfor%}</p>
+    <p>Created At: {{task.created_at}}</p>
+    <p>Estimated hours: {{task.estimated_hours}}</p>
+    <p>Actual Hours: {{task.actual_hours}}</p>
+
+</body>
+</html>
