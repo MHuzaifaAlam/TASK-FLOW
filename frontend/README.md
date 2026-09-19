@@ -18,7 +18,7 @@ cp .env.example .env   # then set VITE_API_BASE_URL to your Django API root
 npm run dev
 ```
 
-The app expects the DRF backend to be running and reachable at `VITE_API_BASE_URL` (defaults to `http://localhost:8000/api`). Make sure CORS is enabled on the backend for the Vite dev origin (`http://localhost:5173`).
+For local development, omit `VITE_API_BASE_URL` to use the Vite proxy at `/api`, which forwards requests to Django at `http://127.0.0.1:8000`. For a deployed frontend, set `VITE_API_BASE_URL` to the public Django API root before building. If the frontend and backend are hosted on different domains, configure the backend's CORS policy for the frontend domain.
 
 ## Project structure
 
@@ -30,8 +30,10 @@ src/
 │   ├── ui/        # Modal, ConfirmDialog, Spinner, EmptyState, ErrorState, Badge, Pagination
 │   ├── layout/    # AppShell, Sidebar, Topbar, icons
 │   ├── tasks/     # TaskFilters, TaskFormModal, TaskTable
-│   └── projects/  # ProjectCard
-├── pages/         # Login, Dashboard, Tasks, TaskDetails, Projects, Profile
+│   ├── projects/  # ProjectCard, ProjectFormModal
+│   ├── profile/   # ProfileFormModal
+│   └── tasks/     # TaskFilters, TaskFormModal, TaskTable
+├── pages/         # Login, Register, Dashboard, Tasks, TaskDetails, Projects, Profile
 ├── hooks/         # useDebounce
 ├── context/       # AuthContext
 ├── routes/        # ProtectedRoute
@@ -43,7 +45,18 @@ src/
 - `POST /token/` and `POST /token/refresh/` are used exactly as documented.
 - The access token is attached to every request via an Axios request interceptor.
 - On a 401, the response interceptor transparently refreshes the access token once and retries the original request. If the refresh itself fails, the user is signed out and redirected to `/login`.
-- On a 429 (the backend throttles at 5 requests/minute), API calls reject with a `ThrottledError` and the UI shows a "you're doing that too often" message instead of a generic failure.
+- On a 429 (the backend throttles at 60 requests/minute), API calls reject with a `ThrottledError` and the UI shows a "you're doing that too often" message instead of a generic failure.
+
+## Production build
+
+The frontend dependencies are defined in `package.json` and locked in `package-lock.json`; these are the frontend equivalent of Python's `requirements.txt`.
+
+```bash
+npm ci
+npm run build
+```
+
+Deploy the generated `dist/` directory with a static web server. Configure it to serve `index.html` for client-side routes such as `/tasks`, `/projects`, and `/profile`.
 
 ## Assumptions that need confirming against your Swagger/OpenAPI schema
 
