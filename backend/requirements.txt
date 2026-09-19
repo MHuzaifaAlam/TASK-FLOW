@@ -4,3 +4,7 @@ djangorestframework==3.18.1
 djangorestframework-simplejwt==5.5.1
 drf-spectacular==0.30.0
 gunicorn==23.0.0
+django-cors-headers
+psycopg2-binary
+dj-database-url
+whitenoise
