@@ -1,4 +1,4 @@
-# ✅ TaskFlow — Full-Stack Task & Project Management System
+# TaskFlow — Full-Stack Task & Project Management System
 
 > A SaaS-style task management platform with a Django REST API backend and a React + TypeScript frontend — built around real-world API concerns like throttling, permission-scoped querysets, and combinable filter/search/sort/pagination.
 
